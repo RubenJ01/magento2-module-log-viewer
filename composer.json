@@ -1,0 +1,24 @@
+{
+  "name": "rjds/magento2-module-log-viewer",
+  "description": "Magento 2 backend log viewer module.",
+  "type": "magento2-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ruben Eekhof",
+      "role": "Developer"
+    },
+    {
+      "name": "Iede Koffeman",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "RJDS\\LogViewer\\": ""
+    }
+  }
+}
