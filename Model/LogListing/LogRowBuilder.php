@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace RJDS\LogViewer\Model\LogListing;
 
 use DateTimeImmutable;
+use Magento\Framework\Phrase;
 use Rjds\PhpHumanize\HumanizerInterface;
 use SplFileInfo;
 
-class LogRowFactory
+class LogRowBuilder
 {
     private const LOG_PATH_PREFIX = 'var/log/';
 
@@ -20,7 +21,7 @@ class LogRowFactory
     /**
      * @return array<string, mixed>
      */
-    public function create(int $id, SplFileInfo $fileInfo, string $logDirectory): array
+    public function build(int $id, SplFileInfo $fileInfo, string $logDirectory): array
     {
         $fileSizeBytes = max(0, (int) $fileInfo->getSize());
         $lastModifiedTimestamp = max(0, (int) $fileInfo->getMTime());
@@ -46,7 +47,7 @@ class LogRowFactory
     }
 
     /**
-     * @return array<string, array{href:string,label:\Magento\Framework\Phrase}>
+     * @return array<string, array{href:string,label:Phrase}>
      */
     private function buildActions(): array
     {
@@ -66,4 +67,3 @@ class LogRowFactory
         ];
     }
 }
-

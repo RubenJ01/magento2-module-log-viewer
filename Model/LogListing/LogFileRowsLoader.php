@@ -6,6 +6,8 @@ namespace RJDS\LogViewer\Model\LogListing;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class LogFileRowsLoader
 {
@@ -14,7 +16,7 @@ class LogFileRowsLoader
 
     public function __construct(
         private readonly DirectoryList $directoryList,
-        private readonly LogRowFactory $rowFactory
+        private readonly LogRowBuilder $rowBuilder
     ) {
     }
 
@@ -35,8 +37,8 @@ class LogFileRowsLoader
             return $this->rows;
         }
 
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($logDirectory, \FilesystemIterator::SKIP_DOTS)
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($logDirectory, \FilesystemIterator::SKIP_DOTS)
         );
 
         $id = 1;
@@ -45,7 +47,7 @@ class LogFileRowsLoader
                 continue;
             }
 
-            $this->rows[] = $this->rowFactory->create($id++, $fileInfo, $logDirectory);
+            $this->rows[] = $this->rowBuilder->build($id++, $fileInfo, $logDirectory);
         }
 
         return $this->rows;

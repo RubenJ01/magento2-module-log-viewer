@@ -1,4 +1,4 @@
-<?php // phpcs:ignore PSR12.Files.FileHeader.SpacingAfterBlock -- baseline
+<?php
 
 declare(strict_types=1);
 
@@ -30,8 +30,8 @@ class LogRowFilter
      */
     private function matchesFilter(array $row, Filter $filter): bool
     {
-        $field = (string) $filter->getField();
-        $condition = (string) ($filter->getConditionType() ?: 'eq');
+        $field = $filter->getField();
+        $condition = $filter->getConditionType() ?: 'eq';
         $value = $filter->getValue();
 
         if ($field === 'fulltext') {
@@ -44,20 +44,13 @@ class LogRowFilter
 
         $currentValue = $row[$field];
 
-        switch ($condition) {
-            case 'like':
-                return stripos((string) $currentValue, trim((string) $value, '%')) !== false;
-            case 'eq':
-                return (string) $currentValue === (string) $value;
-            case 'gteq':
-            case 'from':
-                return (float) $currentValue >= (float) $value;
-            case 'lteq':
-            case 'to':
-                return (float) $currentValue <= (float) $value;
-            default:
-                return true;
-        }
+        return match ($condition) {
+            'like' => stripos((string) $currentValue, trim($value, '%')) !== false,
+            'eq' => (string) $currentValue === $value,
+            'gteq', 'from' => (float) $currentValue >= (float) $value,
+            'lteq', 'to' => (float) $currentValue <= (float) $value,
+            default => true,
+        };
     }
 
     /**
