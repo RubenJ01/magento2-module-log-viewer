@@ -13,6 +13,9 @@
       "role": "Developer"
     }
   ],
+  "require": {
+    "rjds/php-humanize": "^2.3"
+  },
   "autoload": {
     "files": [
       "registration.php"

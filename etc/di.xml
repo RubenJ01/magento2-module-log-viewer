@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Rjds\PhpHumanize\HumanizerInterface" type="Rjds\PhpHumanize\Humanizer"/>
+    <type name="RJDS\LogViewer\Model\LogListing\LogRowFactory">
+        <arguments>
+            <argument name="humanizer" xsi:type="object">Rjds\PhpHumanize\HumanizerInterface</argument>
+        </arguments>
+    </type>
+</config>
