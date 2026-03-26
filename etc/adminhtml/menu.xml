@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="RJDS_LogViewer::logviewer"
+             title="Log Viewer"
+             translate="title"
+             module="RJDS_LogViewer"
+             sortOrder="90"
+             parent="Magento_Reports::report"
+             resource="RJDS_LogViewer::logviewer"/>
+        <add id="RJDS_LogViewer::view_logs"
+             title="View Logs"
+             translate="title"
+             module="RJDS_LogViewer"
+             sortOrder="10"
+             parent="RJDS_LogViewer::logviewer"
+             action="logviewer/index/index"
+             resource="RJDS_LogViewer::view_logs"/>
+    </menu>
+</config>
+
+

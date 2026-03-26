@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">logviewer_log_listing.logviewer_log_listing_data_source</item>
+            <item name="deps" xsi:type="string">logviewer_log_listing.logviewer_log_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">logviewer_log_columns</item>
+    </argument>
+
+    <dataSource name="logviewer_log_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">RJDS\LogViewer\Ui\Component\Listing\LogFileDataProvider</argument>
+            <argument name="name" xsi:type="string">logviewer_log_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+
+    <columns name="logviewer_log_columns">
+        <column name="id" sortOrder="10">
+            <settings>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="file_name" sortOrder="20">
+            <settings>
+                <label translate="true">File Name</label>
+            </settings>
+        </column>
+        <column name="file_location" sortOrder="30">
+            <settings>
+                <label translate="true">File Location</label>
+            </settings>
+        </column>
+        <column name="last_modified" sortOrder="40">
+            <settings>
+                <label translate="true">Last Modified</label>
+            </settings>
+        </column>
+        <column name="file_size" sortOrder="50">
+            <settings>
+                <label translate="true">File Size</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="RJDS\LogViewer\Ui\Component\Listing\Columns\Actions" sortOrder="60">
+            <settings>
+                <indexField>id</indexField>
+                <label translate="true">Actions</label>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>
+
