@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RJDS\LogViewer\Model\LogListing;
+namespace RJDS\LogViewer\Model\Listing;
 
 use Magento\Framework\Api\Filter;
 
@@ -67,4 +67,5 @@ class LogRowFilter
             || stripos((string) ($row['file_location'] ?? ''), $needle) !== false;
     }
 }
+
 

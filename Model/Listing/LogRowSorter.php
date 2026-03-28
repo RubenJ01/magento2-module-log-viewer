@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RJDS\LogViewer\Model\LogListing;
+namespace RJDS\LogViewer\Model\Listing;
 
 class LogRowSorter
 {
@@ -57,4 +57,5 @@ class LogRowSorter
         return strnatcasecmp((string) $leftValue, (string) $rightValue);
     }
 }
+
 

@@ -6,8 +6,8 @@ namespace RJDS\LogViewer\Ui\Component\Listing;
 
 use Magento\Framework\Api\Filter;
 use Magento\Ui\DataProvider\AbstractDataProvider;
-use RJDS\LogViewer\Model\LogListing\LogFileRowsLoader;
-use RJDS\LogViewer\Model\LogListing\LogRowSorter;
+use RJDS\LogViewer\Model\Listing\LogFileRowsLoader;
+use RJDS\LogViewer\Model\Listing\LogRowSorter;
 
 class LogFileDataProvider extends AbstractDataProvider
 {

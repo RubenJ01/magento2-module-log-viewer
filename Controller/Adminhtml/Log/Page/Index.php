@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RJDS\LogViewer\Controller\Adminhtml\Index;
+namespace RJDS\LogViewer\Controller\Adminhtml\Log\Page;
 
 use Magento\Backend\App\Action;
 use Magento\Framework\Controller\ResultFactory;
@@ -21,3 +21,4 @@ class Index extends Action
         return $resultPage;
     }
 }
+
