@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RJDS\LogViewer\Model\LogListing;
+namespace RJDS\LogViewer\Model\Listing;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
@@ -53,4 +53,5 @@ class LogFileRowsLoader
         return $this->rows;
     }
 }
+
 
