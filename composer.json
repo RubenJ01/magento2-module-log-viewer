@@ -1,27 +1,28 @@
 {
-  "name": "rjds/magento2-module-log-viewer",
-  "description": "Magento 2 backend log viewer module.",
-  "type": "magento2-module",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Ruben Eekhof",
-      "role": "Developer"
-    },
-    {
-      "name": "Iede Koffeman",
-      "role": "Developer"
-    }
-  ],
-  "require": {
-    "rjds/php-humanize": "^2.3"
-  },
-  "autoload": {
-    "files": [
-      "registration.php"
+    "name": "rjds/magento2-module-log-viewer",
+    "description": "Magento 2 backend log viewer module.",
+    "type": "magento2-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ruben Eekhof",
+            "role": "Developer"
+        },
+        {
+            "name": "Iede Koffeman",
+            "role": "Developer"
+        }
     ],
-    "psr-4": {
-      "RJDS\\LogViewer\\": ""
+    "require": {
+        "ext-zip": "*",
+        "rjds/php-humanize": "^2.3"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "RJDS\\LogViewer\\": ""
+        }
     }
-  }
 }

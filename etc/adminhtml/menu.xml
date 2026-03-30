@@ -15,7 +15,7 @@
              module="RJDS_LogViewer"
              sortOrder="10"
              parent="RJDS_LogViewer::logviewer"
-             action="logviewer/index/index"
+             action="logviewer/log_page/index"
              resource="RJDS_LogViewer::view_logs"/>
     </menu>
 </config>

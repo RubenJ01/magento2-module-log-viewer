@@ -28,11 +28,29 @@
     </dataSource>
 
     <listingToolbar name="listing_top">
+        <massaction name="listing_massaction">
+            <settings>
+                <indexField>id</indexField>
+                <selectProvider>logviewer_log_listing.logviewer_log_listing.logviewer_log_columns.ids</selectProvider>
+            </settings>
+            <action name="download">
+                <settings>
+                    <type>download</type>
+                    <label translate="true">Download</label>
+                    <url path="logviewer/log_massaction/download"/>
+                </settings>
+            </action>
+        </massaction>
         <bookmark name="bookmarks"/>
         <paging name="listing_paging"/>
     </listingToolbar>
 
     <columns name="logviewer_log_columns">
+        <selectionsColumn name="ids" sortOrder="5">
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </selectionsColumn>
         <column name="id" sortOrder="10">
             <settings>
                 <label translate="true">ID</label>

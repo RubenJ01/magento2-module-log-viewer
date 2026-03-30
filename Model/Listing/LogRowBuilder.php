@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RJDS\LogViewer\Model\LogListing;
+namespace RJDS\LogViewer\Model\Listing;
 
 use DateTimeImmutable;
 use Magento\Framework\Phrase;
@@ -41,7 +41,13 @@ class LogRowBuilder
 
     private function buildRelativePath(string $absolutePath, string $logDirectory): string
     {
-        $relativePath = ltrim(substr($absolutePath, strlen($logDirectory)), DIRECTORY_SEPARATOR);
+        $normalizedAbsolutePath = str_replace('\\', '/', $absolutePath);
+        $normalizedLogDirectory = rtrim(str_replace('\\', '/', $logDirectory), '/') . '/';
+        if (!str_starts_with($normalizedAbsolutePath, $normalizedLogDirectory)) {
+            return self::LOG_PATH_PREFIX . basename($absolutePath);
+        }
+
+        $relativePath = ltrim(substr($normalizedAbsolutePath, strlen($normalizedLogDirectory)), '/');
 
         return self::LOG_PATH_PREFIX . $relativePath;
     }
@@ -67,3 +73,4 @@ class LogRowBuilder
         ];
     }
 }
+
