@@ -1,0 +1,80 @@
+when:
+  event: [ push, pull_request, manual ]
+
+matrix:
+  include:
+    - MAGENTO_VERSION: "2.4.6-p8"
+      PHP_VERSION: "8.1"
+      COMPOSER_CHANNEL: "2.2"
+    - MAGENTO_VERSION: "2.4.7-p3"
+      PHP_VERSION: "8.2"
+      COMPOSER_CHANNEL: "2"
+    - MAGENTO_VERSION: "2.4.8"
+      PHP_VERSION: "8.3"
+      COMPOSER_CHANNEL: "2"
+
+steps:
+  test:
+    image: ghcr.io/shivammathur/php:${PHP_VERSION}
+    environment:
+      COMPOSER_AUTH:
+        from_secret: COMPOSER_AUTH
+      MAGENTO_PUBLIC_KEY:
+        from_secret: MAGENTO_PUBLIC_KEY
+      MAGENTO_PRIVATE_KEY:
+        from_secret: MAGENTO_PRIVATE_KEY
+      COMPOSER_MEMORY_LIMIT: "-1"
+    commands:
+      - php -v
+      - php -r "ini_set('memory_limit','768M'); echo ini_get('memory_limit'), PHP_EOL;"
+      - composer --version || true
+      - |
+        if ! command -v composer >/dev/null 2>&1; then
+          php -r "copy('https://getcomposer.org/installer','composer-setup.php');"
+          php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer
+          rm -f composer-setup.php
+        fi
+      - composer self-update --${COMPOSER_CHANNEL} || true
+      - composer config --global audit.block-insecure false || true
+      - |
+        if [ -n "${COMPOSER_AUTH:-}" ]; then
+          mkdir -p ~/.composer
+          printf '%s' "$COMPOSER_AUTH" > ~/.composer/auth.json
+        elif [ -n "${MAGENTO_PUBLIC_KEY:-}" ] && [ -n "${MAGENTO_PRIVATE_KEY:-}" ]; then
+          composer config --global http-basic.repo.magento.com "$MAGENTO_PUBLIC_KEY" "$MAGENTO_PRIVATE_KEY"
+        else
+          echo "Missing Composer auth for repo.magento.com. Provide COMPOSER_AUTH or MAGENTO_PUBLIC_KEY + MAGENTO_PRIVATE_KEY."
+          exit 1
+        fi
+      - composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} magento --no-interaction
+      - cd magento
+      - composer config repositories.logviewer path ..
+      - composer require rjds/magento2-module-log-viewer:@dev --no-interaction
+      - cp dev/tests/integration/etc/install-config-mysql.php.dist dev/tests/integration/etc/install-config-mysql.php
+      - sed -i "s/'db-host' => 'localhost'/'db-host' => 'mysql'/" dev/tests/integration/etc/install-config-mysql.php
+      - sed -i "s/'db-password' => '123123q'/'db-password' => 'magento'/" dev/tests/integration/etc/install-config-mysql.php
+      - sed -i "s/'opensearch-host' => 'localhost'/'opensearch-host' => 'opensearch'/" dev/tests/integration/etc/install-config-mysql.php
+      - sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => 'rabbitmq'/" dev/tests/integration/etc/install-config-mysql.php
+      - cd dev/tests/integration
+      - |
+        mapfile -t test_files < <(find ../../../vendor/rjds/magento2-module-log-viewer/Test/Integration -name '*Test.php' -type f | sort)
+        if [ "${#test_files[@]}" -eq 0 ]; then
+          echo "No *Test.php files found under vendor/rjds/magento2-module-log-viewer/Test/Integration"
+          exit 1
+        fi
+        ../../../vendor/bin/phpunit -c phpunit.xml.dist "${test_files[@]}"
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: magento
+      MYSQL_DATABASE: magento_integration_tests
+  opensearch:
+    image: opensearchproject/opensearch:2.11.1
+    environment:
+      discovery.type: single-node
+      plugins.security.disabled: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
