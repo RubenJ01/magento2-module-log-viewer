@@ -17,12 +17,29 @@ matrix:
 
 steps:
   test:
-    image: ghcr.io/shivammathur/php:${PHP_VERSION}
+    image: docker.io/php:${PHP_VERSION}-cli-bookworm
     environment:
       COMPOSER_AUTH:
         from_secret: composer_auth
       COMPOSER_MEMORY_LIMIT: "-1"
     commands:
+      - |
+        set -eux
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        apt-get install -y --no-install-recommends \
+          git unzip ca-certificates \
+          libzip-dev zlib1g-dev \
+          libicu-dev \
+          libpng-dev libjpeg62-turbo-dev libwebp-dev libfreetype6-dev \
+          libxml2-dev libxslt1-dev \
+          libonig-dev \
+          libcurl4-openssl-dev \
+          default-libmysqlclient-dev
+        docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
+        docker-php-ext-install -j"$(nproc)" \
+          bcmath intl mbstring pdo_mysql mysqli soap xsl zip opcache gd curl dom xml simplexml sockets
+        rm -rf /var/lib/apt/lists/*
       - php -v
       - php -r "ini_set('memory_limit','768M'); echo ini_get('memory_limit'), PHP_EOL;"
       - composer --version || true
