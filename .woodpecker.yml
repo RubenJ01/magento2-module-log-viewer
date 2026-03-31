@@ -69,7 +69,7 @@ services:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento_integration_tests
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.24
+    image: docker.io/elastic/elasticsearch:7.17.24
     environment:
       discovery.type: single-node
       xpack.security.enabled: "false"
