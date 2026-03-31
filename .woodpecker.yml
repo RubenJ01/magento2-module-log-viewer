@@ -21,10 +21,6 @@ steps:
     environment:
       COMPOSER_AUTH:
         from_secret: composer_auth
-      MAGENTO_PUBLIC_KEY:
-        from_secret: magento_public_key
-      MAGENTO_PRIVATE_KEY:
-        from_secret: magento_private_key
       COMPOSER_MEMORY_LIMIT: "-1"
     commands:
       - php -v
@@ -42,10 +38,8 @@ steps:
         if [ -n "${COMPOSER_AUTH:-}" ]; then
           mkdir -p ~/.composer
           printf '%s' "$COMPOSER_AUTH" > ~/.composer/auth.json
-        elif [ -n "${MAGENTO_PUBLIC_KEY:-}" ] && [ -n "${MAGENTO_PRIVATE_KEY:-}" ]; then
-          composer config --global http-basic.repo.magento.com "$MAGENTO_PUBLIC_KEY" "$MAGENTO_PRIVATE_KEY"
         else
-          echo "Missing Composer auth for repo.magento.com. Provide COMPOSER_AUTH or MAGENTO_PUBLIC_KEY + MAGENTO_PRIVATE_KEY."
+          echo "Missing Composer auth for repo.magento.com. Provide composer_auth secret."
           exit 1
         fi
       - composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition:${MAGENTO_VERSION} magento --no-interaction
