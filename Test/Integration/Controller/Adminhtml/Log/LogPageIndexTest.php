@@ -13,9 +13,13 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
  */
 class LogPageIndexTest extends AbstractBackendController
 {
+    protected $resource = 'RJDS_LogViewer::view_logs';
+
+    protected $uri = 'backend/logviewer/log_page/index';
+
     public function testIndexPageRendersViewLogs(): void
     {
-        $this->dispatch('backend/logviewer/log_page/index');
+        $this->dispatch($this->uri);
         $this->assertNotSame(404, $this->getResponse()->getHttpResponseCode());
         $body = $this->getResponse()->getBody();
         $this->assertStringContainsString('View Logs', $body);

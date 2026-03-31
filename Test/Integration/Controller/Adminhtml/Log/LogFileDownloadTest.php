@@ -13,9 +13,13 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
  */
 class LogFileDownloadTest extends AbstractBackendController
 {
+    protected $resource = 'RJDS_LogViewer::view_logs';
+
+    protected $uri = 'backend/logviewer/log_action/download/id/0';
+
     public function testDownloadWithInvalidIdRedirectsToListing(): void
     {
-        $this->dispatch('backend/logviewer/log_action/download/id/0');
+        $this->dispatch($this->uri);
         $this->assertTrue($this->getResponse()->isRedirect());
     }
 }
