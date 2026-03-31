@@ -1,5 +1,5 @@
 when:
-  - event: [ push, manual ]
+  - event: manual
   - event: pull_request
     evaluate: 'CI_COMMIT_TARGET_BRANCH == "main"'
 
