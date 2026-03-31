@@ -49,7 +49,9 @@ steps:
       - cp dev/tests/integration/etc/install-config-mysql.php.dist dev/tests/integration/etc/install-config-mysql.php
       - sed -i "s/'db-host' => 'localhost'/'db-host' => 'mysql'/" dev/tests/integration/etc/install-config-mysql.php
       - sed -i "s/'db-password' => '123123q'/'db-password' => 'magento'/" dev/tests/integration/etc/install-config-mysql.php
-      - sed -i "s/'opensearch-host' => 'localhost'/'opensearch-host' => 'opensearch'/" dev/tests/integration/etc/install-config-mysql.php
+      - sed -i "s/'search-engine' => 'opensearch'/'search-engine' => 'elasticsearch7'/" dev/tests/integration/etc/install-config-mysql.php
+      - sed -i "s/'opensearch-host' => 'localhost'/'elasticsearch-host' => 'elasticsearch'/" dev/tests/integration/etc/install-config-mysql.php
+      - sed -i "s/'opensearch-port' => 9200/'elasticsearch-port' => 9200/" dev/tests/integration/etc/install-config-mysql.php
       - sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => 'rabbitmq'/" dev/tests/integration/etc/install-config-mysql.php
       - cd dev/tests/integration
       - |
@@ -66,11 +68,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento_integration_tests
-  opensearch:
-    image: opensearchproject/opensearch:2.11.1
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.24
     environment:
       discovery.type: single-node
-      plugins.security.disabled: "true"
-      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
