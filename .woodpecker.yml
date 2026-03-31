@@ -1,5 +1,7 @@
 when:
-  - evaluate: 'CI_PIPELINE_EVENT == "push" || CI_PIPELINE_EVENT == "manual" || (CI_PIPELINE_EVENT == "pull_request" && CI_COMMIT_TARGET_BRANCH == "main")'
+  - event: [ push, manual ]
+  - event: pull_request
+    evaluate: 'CI_COMMIT_TARGET_BRANCH == "main"'
 
 matrix:
   include:
@@ -18,11 +20,11 @@ steps:
     image: ghcr.io/shivammathur/php:${PHP_VERSION}
     environment:
       COMPOSER_AUTH:
-        from_secret: COMPOSER_AUTH
+        from_secret: composer_auth
       MAGENTO_PUBLIC_KEY:
-        from_secret: MAGENTO_PUBLIC_KEY
+        from_secret: magento_public_key
       MAGENTO_PRIVATE_KEY:
-        from_secret: MAGENTO_PRIVATE_KEY
+        from_secret: magento_private_key
       COMPOSER_MEMORY_LIMIT: "-1"
     commands:
       - php -v
