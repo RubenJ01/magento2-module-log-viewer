@@ -57,12 +57,12 @@ steps:
       - sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => 'rabbitmq'/" dev/tests/integration/etc/install-config-mysql.php
       - cd dev/tests/integration
       - |
-        mapfile -t test_files < <(find ../../../vendor/rjds/magento2-module-log-viewer/Test/Integration -name '*Test.php' -type f | sort)
-        if [ "${#test_files[@]}" -eq 0 ]; then
-          echo "No *Test.php files found under vendor/rjds/magento2-module-log-viewer/Test/Integration"
+        test_root="../../../vendor/rjds/magento2-module-log-viewer/Test/Integration"
+        if ! find "$test_root" -type f -name '*Test.php' | grep -q .; then
+          echo "No *Test.php files found under $test_root"
           exit 1
         fi
-        ../../../vendor/bin/phpunit -c phpunit.xml.dist "${test_files[@]}"
+        find "$test_root" -type f -name '*Test.php' -print0 | sort -z | xargs -0 ../../../vendor/bin/phpunit -c phpunit.xml.dist
 
 services:
   mysql:
