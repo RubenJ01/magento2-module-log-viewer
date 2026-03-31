@@ -1,0 +1,124 @@
+name: Magento integration tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - magento-version: "2.4.6-p8"
+            php-version: "8.1"
+          - magento-version: "2.4.7-p3"
+            php-version: "8.2"
+          - magento-version: "2.4.8"
+            php-version: "8.3"
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: magento
+          MYSQL_DATABASE: magento_integration_tests
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pmagento"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      opensearch:
+        image: opensearchproject/opensearch:2.11.1
+        env:
+          discovery.type: single-node
+          plugins.security.disabled: "true"
+          OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd="curl -fsS http://127.0.0.1:9200/_cluster/health"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+
+      rabbitmq:
+        image: rabbitmq:3.13-management-alpine
+        ports:
+          - 5672:5672
+        options: >-
+          --health-cmd="rabbitmq-diagnostics -q ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout module
+        uses: actions/checkout@v4
+        with:
+          path: extension
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: bcmath, ctype, curl, dom, gd, intl, mbstring, openssl, pdo_mysql, simplexml, soap, sockets, sodium, xml, xsl, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Configure Composer authentication for repo.magento.com
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+          MAGENTO_PUBLIC_KEY: ${{ secrets.MAGENTO_PUBLIC_KEY }}
+          MAGENTO_PRIVATE_KEY: ${{ secrets.MAGENTO_PRIVATE_KEY }}
+        run: |
+          if [ -n "$COMPOSER_AUTH" ]; then
+            mkdir -p ~/.composer
+            printf '%s' "$COMPOSER_AUTH" > ~/.composer/auth.json
+          elif [ -n "$MAGENTO_PUBLIC_KEY" ] && [ -n "$MAGENTO_PRIVATE_KEY" ]; then
+            composer config --global http-basic.repo.magento.com "$MAGENTO_PUBLIC_KEY" "$MAGENTO_PRIVATE_KEY"
+          else
+            echo "Set GitHub secret COMPOSER_AUTH (JSON for repo.magento.com) or MAGENTO_PUBLIC_KEY and MAGENTO_PRIVATE_KEY."
+            exit 1
+          fi
+
+      - name: Create Magento project
+        env:
+          COMPOSER_MEMORY_LIMIT: "-1"
+        run: |
+          composer create-project \
+            --repository-url=https://repo.magento.com/ \
+            magento/project-community-edition:${{ matrix.magento-version }} \
+            magento \
+            --no-interaction
+
+      - name: Require module from checkout
+        working-directory: magento
+        env:
+          COMPOSER_MEMORY_LIMIT: "-1"
+        run: |
+          composer config repositories.logviewer path ../extension
+          composer require rjds/magento2-module-log-viewer:@dev --no-interaction
+
+      - name: Configure integration test DB and search (install-config-mysql.php)
+        working-directory: magento
+        run: |
+          cp dev/tests/integration/etc/install-config-mysql.php.dist dev/tests/integration/etc/install-config-mysql.php
+          sed -i "s/'db-host' => 'localhost'/'db-host' => '127.0.0.1'/" dev/tests/integration/etc/install-config-mysql.php
+          sed -i "s/'db-password' => '123123q'/'db-password' => 'magento'/" dev/tests/integration/etc/install-config-mysql.php
+          sed -i "s/'opensearch-host' => 'localhost'/'opensearch-host' => '127.0.0.1'/" dev/tests/integration/etc/install-config-mysql.php
+          sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => '127.0.0.1'/" dev/tests/integration/etc/install-config-mysql.php
+
+      - name: Run Log Viewer integration tests
+        working-directory: magento
+        run: |
+          vendor/bin/phpunit \
+            -c dev/tests/integration/phpunit.xml.dist \
+            vendor/rjds/magento2-module-log-viewer/Test/Integration
