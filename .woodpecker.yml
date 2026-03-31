@@ -21,7 +21,7 @@ steps:
     environment:
       COMPOSER_AUTH:
         from_secret: composer_auth
-      COMPOSER_MEMORY_LIMIT: "-1"
+      COMPOSER_MEMORY_LIMIT: "1536M"
     commands:
       - |
         set -eux
@@ -41,7 +41,7 @@ steps:
           bcmath intl mbstring pdo_mysql mysqli soap xsl zip opcache gd curl dom xml simplexml sockets
         rm -rf /var/lib/apt/lists/*
       - php -v
-      - php -r "ini_set('memory_limit','768M'); echo ini_get('memory_limit'), PHP_EOL;"
+      - php -r "ini_set('memory_limit','512M'); echo ini_get('memory_limit'), PHP_EOL;"
       - composer --version || true
       - |
         if ! command -v composer >/dev/null 2>&1; then
@@ -85,11 +85,17 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento_integration_tests
+    command:
+      - --innodb-buffer-pool-size=128M
+      - --performance-schema=OFF
+      - --max_connections=100
   elasticsearch:
     image: docker.io/elastic/elasticsearch:7.17.24
     environment:
       discovery.type: single-node
       xpack.security.enabled: "false"
-      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ES_JAVA_OPTS: -Xms256m -Xmx256m
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
+    environment:
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: "0.4"
