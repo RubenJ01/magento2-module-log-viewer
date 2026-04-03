@@ -15,7 +15,7 @@
     ],
     "require": {
         "ext-zip": "*",
-        "rjds/php-humanize": "^2.3"
+        "rjds/php-humanize": "^3.0"
     },
     "autoload": {
         "files": [
