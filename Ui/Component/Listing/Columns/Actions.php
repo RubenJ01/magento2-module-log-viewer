@@ -41,6 +41,16 @@ class Actions extends Column
                     'href' => $this->urlBuilder->getUrl('logviewer/log_action/download', ['id' => $item['id']]),
                     'label' => __('Download'),
                 ];
+
+                $item[$this->getData('name')]['delete'] = [
+                    'href' => $this->urlBuilder->getUrl('logviewer/log_action/delete', ['id' => $item['id']]),
+                    'label' => __('Delete'),
+                    'confirm' => [
+                        'title' => __('Delete log file'),
+                        'message' => __('Are you sure you want to delete this log file?'),
+                    ],
+                    'post' => true,
+                ];
             }
         }
 
