@@ -1,0 +1,124 @@
+.log-viewer {
+    padding: 20px;
+    font-family: monospace;
+}
+
+.log-viewer__toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.log-viewer__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    font-family: sans-serif;
+}
+
+.log-viewer__back:hover {
+    background-color: #e8e8e8;
+    color: #000;
+}
+
+.log-viewer__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.log-viewer__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.log-viewer__count {
+    color: #666;
+    font-size: 13px;
+}
+
+.log-viewer__empty {
+    color: #666;
+    font-style: italic;
+}
+
+.log-viewer__table-wrapper {
+    overflow-x: auto;
+}
+
+.log-viewer__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.log-viewer__th {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+.log-viewer__th--line {
+    width: 50px;
+    text-align: center;
+}
+
+.log-viewer__td {
+    border: 1px solid #eee;
+    padding: 6px 12px;
+    vertical-align: top;
+    word-break: break-all;
+}
+
+.log-viewer__td--line {
+    text-align: center;
+    color: #999;
+    width: 50px;
+    background-color: #f5f5f5;
+}
+
+.log-viewer__tr--error .log-viewer__td--line,
+.log-viewer__tr--warning .log-viewer__td--line,
+.log-viewer__tr--info .log-viewer__td--line,
+.log-viewer__tr--debug .log-viewer__td--line {
+    background-color: #f5f5f5;
+    color: #999;
+}
+
+.log-viewer__tr--error {
+    background-color: #fff5f5;
+    color: #000000;
+}
+
+.log-viewer__tr--warning {
+    background-color: #fffbf0;
+    color: #856404;
+}
+
+.log-viewer__tr--info {
+    background-color: #f0f7ff;
+    color: #0550ae;
+}
+
+.log-viewer__tr--debug {
+    background-color: #f9f9f9;
+    color: #555;
+}
+
+.log-viewer__tr--default {
+    background-color: #fff;
+}

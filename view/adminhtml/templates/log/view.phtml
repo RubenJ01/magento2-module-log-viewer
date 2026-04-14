@@ -1,0 +1,79 @@
+<?php
+
+declare(strict_types=1);
+
+/** @var Template $block */
+/** @var View $viewModel */
+
+use Magento\Backend\Block\Template;
+use RJDS\LogViewer\ViewModel\Log\View;
+
+$viewModel = $block->getData('view_model');
+$entries   = $viewModel->getLogEntries();
+$fileName  = $viewModel->getFileName();
+?>
+
+<div class="log-viewer">
+    <div class="log-viewer__header">
+        <h2 class="log-viewer__title"><?= $block->escapeHtml($fileName) ?></h2>
+        <span class="log-viewer__count"><?= count($entries) ?> entries</span>
+    </div>
+    <div class="log-viewer__toolbar">
+        <a href="<?= $block->escapeUrl($block->getUrl('logviewer/log_page/index')) ?>"
+           class="log-viewer__back">
+            &larr; <?= $block->escapeHtml(__('Back to Logs')) ?>
+        </a>
+
+        <form class="log-viewer__limit-form" method="get">
+            <input type="hidden" name="id" value="<?= (int) $viewModel->getId() ?>"/>
+            <label class="log-viewer__limit-label" for="log-limit">
+                <?= $block->escapeHtml(__('Rows per page')) ?>
+            </label>
+            <select class="log-viewer__limit-select"
+                    id="log-limit"
+                    name="limit"
+                    onchange="this.form.submit()">
+                <?php foreach ([50, 100, 250, 500, 1000] as $option): ?>
+                    <option value="<?= (int) $option ?>"
+                        <?= $viewModel->getLimit() === $option ? 'selected' : '' ?>>
+                        <?= (int) $option ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </form>
+    </div>
+    <?php if (empty($entries)): ?>
+        <p class="log-viewer__empty"><?= $block->escapeHtml(__('No log entries found.')) ?></p>
+    <?php else: ?>
+        <div class="log-viewer__table-wrapper">
+            <table class="log-viewer__table">
+                <thead>
+                <tr>
+                    <th class="log-viewer__th log-viewer__th--line">#</th>
+                    <th class="log-viewer__th log-viewer__th--entry">Log Entry</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($entries as $index => $line): ?>
+                    <?php
+                    $level = 'default';
+                    if (str_contains($line, '.ERROR') || str_contains($line, '.CRITICAL')) {
+                        $level = 'error';
+                    } elseif (str_contains($line, '.WARNING')) {
+                        $level = 'warning';
+                    } elseif (str_contains($line, '.INFO')) {
+                        $level = 'info';
+                    } elseif (str_contains($line, '.DEBUG')) {
+                        $level = 'debug';
+                    }
+                    ?>
+                    <tr class="log-viewer__tr log-viewer__tr--<?= $block->escapeHtmlAttr($level) ?>">
+                        <td class="log-viewer__td log-viewer__td--line"><?= (int)($index + 1) ?></td>
+                        <td class="log-viewer__td log-viewer__td--entry"><?= $block->escapeHtml($line) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
+</div>
