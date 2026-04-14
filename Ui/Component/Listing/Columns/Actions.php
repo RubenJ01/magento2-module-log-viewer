@@ -31,13 +31,20 @@ class Actions extends Column
             return $dataSource;
         }
 
+        $columnName = $this->getData('name');
+
         foreach ($dataSource['data']['items'] as &$item) {
-            if (!isset($item[$this->getData('name')]) || !is_array($item[$this->getData('name')])) {
-                $item[$this->getData('name')] = [];
+            if (!isset($item[$columnName]) || !is_array($item[$columnName])) {
+                $item[$columnName] = [];
             }
 
             if (isset($item['id'])) {
-                $item[$this->getData('name')]['download'] = [
+                $item[$columnName]['view'] = [
+                    'href' => $this->urlBuilder->getUrl('logviewer/log_action/view', ['id' => $item['id']]),
+                    'label' => __('View'),
+                ];
+
+                $item[$columnName]['download'] = [
                     'href' => $this->urlBuilder->getUrl('logviewer/log_action/download', ['id' => $item['id']]),
                     'label' => __('Download'),
                 ];
