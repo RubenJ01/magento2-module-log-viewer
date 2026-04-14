@@ -37,10 +37,11 @@ class Download extends Action
 	}
 
 	/**
+	 * @return Redirect|ResponseInterface
 	 * @throws FileSystemException
 	 * @throws Exception
 	 */
-	public function execute(): Redirect|ResponseInterface
+	public function execute()
 	{
 		$requestedIds = $this->selectedRowsResolver->resolveRequestedIds($this->getRequest());
 		if ($requestedIds === []) {
@@ -110,7 +111,10 @@ class Download extends Action
 		return 'tmp/' . $zipFileName;
 	}
 
-	private function redirectWithError(Phrase|string $errorMessage): Redirect
+	/**
+	 * @param Phrase|string $errorMessage
+	 */
+	private function redirectWithError($errorMessage): Redirect
 	{
 		$this->messageManager->addErrorMessage($errorMessage);
 

@@ -28,10 +28,11 @@ class Download extends Action
     }
 
     /**
+     * @return Redirect|ResponseInterface
      * @throws FileSystemException
      * @throws LocalizedException
      */
-    public function execute(): Redirect|ResponseInterface
+    public function execute()
     {
         $id = (int) $this->getRequest()->getParam('id');
         if ($id <= 0) {
@@ -66,7 +67,10 @@ class Download extends Action
         return null;
     }
 
-    private function redirectWithError(Phrase|string $errorMessage): Redirect
+    /**
+     * @param Phrase|string $errorMessage
+     */
+    private function redirectWithError($errorMessage): Redirect
     {
         $this->messageManager->addErrorMessage($errorMessage);
 
