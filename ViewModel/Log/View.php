@@ -105,7 +105,6 @@ class View implements ArgumentInterface
         return max(1, (int) ($this->request->getParam('p') ?: 1));
     }
 
-
     public function getSearchQuery(): string
     {
         return (string) ($this->request->getParam('q') ?? '');
@@ -134,7 +133,6 @@ class View implements ArgumentInterface
         return (string) ($row['file_name'] ?? '');
     }
 
-
     public function getId(): int
     {
         return (int) $this->request->getParam('id');
@@ -157,7 +155,7 @@ class View implements ArgumentInterface
         if ($level !== '') {
             $entries = array_filter(
                 $entries,
-                static fn (string $line): bool => $this->getLevel($line) === $level
+                fn (string $line): bool => $this->getLevel($line) === $level
             );
         }
 
