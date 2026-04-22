@@ -1,13 +1,19 @@
 .log-viewer {
-    padding: 20px;
-    font-family: monospace;
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .log-viewer__toolbar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    flex-wrap: wrap;
 }
 
 .log-viewer__back {
@@ -15,110 +21,292 @@
     align-items: center;
     gap: 6px;
     padding: 6px 12px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    color: #333;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: #475569;
     text-decoration: none;
     font-size: 13px;
-    font-family: sans-serif;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    white-space: nowrap;
 }
 
 .log-viewer__back:hover {
-    background-color: #e8e8e8;
-    color: #000;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #1e293b;
+}
+
+/* ── Divider ── */
+.log-viewer__toolbar-divider {
+    width: 1px;
+    height: 22px;
+    background: #e2e8f0;
+    flex-shrink: 0;
+}
+
+.log-viewer__filter-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.log-viewer__filter-select,
+.log-viewer__search-input {
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #f8fafc;
+    color: #374151;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+    height: 32px;
+}
+
+.log-viewer__filter-select {
+    cursor: pointer;
+}
+
+.log-viewer__filter-select:hover,
+.log-viewer__search-input:hover {
+    border-color: #94a3b8;
+}
+
+.log-viewer__filter-select:focus,
+.log-viewer__search-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    background: #fff;
+}
+
+.log-viewer__search-input {
+    min-width: 180px;
+}
+
+.log-viewer__filter-btn {
+    padding: 6px 14px;
+    background: #6366f1;
+    border: 1px solid #6366f1;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    height: 32px;
+}
+
+.log-viewer__filter-btn:hover {
+    background: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.log-viewer__pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.log-viewer__page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: #475569;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+.log-viewer__page-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #1e293b;
+}
+
+.log-viewer__page-info {
+    font-size: 13px;
+    color: #64748b;
+    padding: 0 6px;
+    white-space: nowrap;
+}
+
+.log-viewer__limit-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.log-viewer__limit-label {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.log-viewer__limit-select {
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #f8fafc;
+    color: #374151;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    outline: none;
+    height: 32px;
+}
+
+.log-viewer__limit-select:hover {
+    border-color: #94a3b8;
+}
+
+.log-viewer__limit-select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 .log-viewer__header {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     margin-bottom: 16px;
 }
 
 .log-viewer__title {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
     margin: 0;
+    color: #0f172a;
 }
 
 .log-viewer__count {
-    color: #666;
-    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .log-viewer__empty {
-    color: #666;
+    padding: 40px;
+    text-align: center;
+    color: #94a3b8;
     font-style: italic;
+    background: #f8fafc;
+    border: 1px dashed #e2e8f0;
+    border-radius: 8px;
 }
 
 .log-viewer__table-wrapper {
-    overflow-x: auto;
+    max-height: 70vh;
+    overflow: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .log-viewer__table {
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
 }
 
 .log-viewer__th {
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    padding: 8px 12px;
+    background: #f8fafc;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 10px 14px;
     text-align: left;
     font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
     position: sticky;
     top: 0;
+    z-index: 2;
 }
 
 .log-viewer__th--line {
-    width: 50px;
+    width: 60px;
     text-align: center;
+}
+
+.log-viewer__table td {
+    vertical-align: top !important;
+    height: auto !important;
 }
 
 .log-viewer__td {
-    border: 1px solid #eee;
-    padding: 6px 12px;
-    vertical-align: top;
-    word-break: break-all;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 4px 14px !important;
+    vertical-align: top !important;
+    line-height: 1.5;
 }
 
 .log-viewer__td--line {
-    text-align: center;
-    color: #999;
-    width: 50px;
-    background-color: #f5f5f5;
+    width: 60px;
+    text-align: right;
+    color: #94a3b8;
+    background: #f8fafc;
+    white-space: nowrap;
+    padding: 4px 10px !important;
+    border-right: 1px solid #e2e8f0;
+    font-size: 11px;
+    user-select: none;
+    vertical-align: top !important;
 }
 
-.log-viewer__tr--error .log-viewer__td--line,
-.log-viewer__tr--warning .log-viewer__td--line,
-.log-viewer__tr--info .log-viewer__td--line,
-.log-viewer__tr--debug .log-viewer__td--line {
-    background-color: #f5f5f5;
-    color: #999;
+.log-viewer__td--entry {
+    white-space: pre-wrap;
+    word-break: break-word;
+    vertical-align: top !important;
 }
 
-.log-viewer__tr--error {
-    background-color: #fff5f5;
-    color: #000000;
+.log-viewer__tr--critical .log-viewer__td--line,
+.log-viewer__tr--error    .log-viewer__td--line,
+.log-viewer__tr--warning  .log-viewer__td--line,
+.log-viewer__tr--info     .log-viewer__td--line,
+.log-viewer__tr--debug    .log-viewer__td--line {
+    background: #f8fafc;
+    color: #94a3b8;
 }
 
-.log-viewer__tr--warning {
-    background-color: #fffbf0;
-    color: #856404;
+.log-viewer__tr--critical { background: #fff1f2; color: #881337; }
+.log-viewer__tr--error    { background: #fff5f5; color: #7f1d1d; }
+.log-viewer__tr--warning  { background: #fffbeb; color: #78350f; }
+.log-viewer__tr--info     { background: #eff6ff; color: #1e3a5f; }
+.log-viewer__tr--debug    { background: #f8fafc; color: #475569; }
+.log-viewer__tr--default  { background: #fff; }
+
+.log-viewer__tr--critical .log-viewer__td--line { border-left: 3px solid #f43f5e; }
+.log-viewer__tr--error    .log-viewer__td--line { border-left: 3px solid #ef4444; }
+.log-viewer__tr--warning  .log-viewer__td--line { border-left: 3px solid #f59e0b; }
+.log-viewer__tr--info     .log-viewer__td--line { border-left: 3px solid #3b82f6; }
+.log-viewer__tr--debug    .log-viewer__td--line { border-left: 3px solid #94a3b8; }
+.log-viewer__tr--default  .log-viewer__td--line { border-left: 3px solid transparent; }
+
+.log-viewer__tr:hover td {
+    filter: brightness(0.97);
 }
 
-.log-viewer__tr--info {
-    background-color: #f0f7ff;
-    color: #0550ae;
-}
-
-.log-viewer__tr--debug {
-    background-color: #f9f9f9;
-    color: #555;
-}
-
-.log-viewer__tr--default {
-    background-color: #fff;
+mark {
+    background: #fef08a;
+    color: #713f12;
+    padding: 0 2px;
+    border-radius: 2px;
 }

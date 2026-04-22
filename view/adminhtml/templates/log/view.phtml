@@ -4,76 +4,122 @@ declare(strict_types=1);
 
 /** @var Template $block */
 /** @var View $viewModel */
+/** @var Escaper $escaper */
 
 use Magento\Backend\Block\Template;
 use RJDS\LogViewer\ViewModel\Log\View;
+use Magento\Framework\Escaper;
 
-$viewModel = $block->getData('view_model');
-$entries   = $viewModel->getLogEntries();
-$fileName  = $viewModel->getFileName();
+$viewModel   = $block->getData('view_model');
+$entries     = $viewModel->getLogEntries();
+$fileName    = $viewModel->getFileName();
+$currentPage = $viewModel->getPage();
+$totalPages  = $viewModel->getTotalPages();
+$limit       = $viewModel->getLimit();
+$id          = $viewModel->getId();
+$q           = $viewModel->getSearchQuery();
+$level       = $viewModel->getLevelFilter();
 ?>
 
 <div class="log-viewer">
-    <div class="log-viewer__header">
-        <h2 class="log-viewer__title"><?= $block->escapeHtml($fileName) ?></h2>
-        <span class="log-viewer__count"><?= count($entries) ?> entries</span>
-    </div>
+
     <div class="log-viewer__toolbar">
-        <a href="<?= $block->escapeUrl($block->getUrl('logviewer/log_page/index')) ?>"
+
+        <a href="<?= $escaper->escapeUrl($block->getUrl('logviewer/log_page/index')) ?>"
            class="log-viewer__back">
-            &larr; <?= $block->escapeHtml(__('Back to Logs')) ?>
+            &larr; <?= $escaper->escapeHtml(__('Back')) ?>
         </a>
 
-        <form class="log-viewer__limit-form" method="get">
-            <input type="hidden" name="id" value="<?= (int) $viewModel->getId() ?>"/>
-            <label class="log-viewer__limit-label" for="log-limit">
-                <?= $block->escapeHtml(__('Rows per page')) ?>
+        <div class="log-viewer__toolbar-divider"></div>
+
+        <form class="log-viewer__filter-form" method="get">
+            <input type="hidden" name="id" value="<?= $id ?>"/>
+            <input type="hidden" name="limit" value="<?= $limit ?>"/>
+            <input type="hidden" name="p" value="1"/>
+
+            <label>
+                <select name="level" class="log-viewer__filter-select" onchange="this.form.submit()">
+                    <option value=""><?= $escaper->escapeHtml(__('All levels')) ?></option>
+                    <?php foreach ($viewModel->getLevelOptions() as $value => $label): ?>
+                        <option value="<?= $value ?>" <?= $level === $value ? 'selected' : '' ?>><?= $label ?></option>
+                    <?php endforeach; ?>
+                </select>
             </label>
-            <select class="log-viewer__limit-select"
-                    id="log-limit"
-                    name="limit"
-                    onchange="this.form.submit()">
-                <?php foreach ([50, 100, 250, 500, 1000] as $option): ?>
-                    <option value="<?= (int) $option ?>"
-                        <?= $viewModel->getLimit() === $option ? 'selected' : '' ?>>
-                        <?= (int) $option ?>
-                    </option>
+
+            <input type="text"
+                   name="q"
+                   value="<?= $escaper->escapeHtml($q) ?>"
+                   placeholder="<?= $escaper->escapeHtml(__('Search...')) ?>"
+                   class="log-viewer__search-input"/>
+
+            <button type="submit" class="log-viewer__filter-btn"><?= $escaper->escapeHtml(__('Apply')) ?></button>
+        </form>
+
+        <div class="log-viewer__toolbar-divider"></div>
+
+        <?php if ($totalPages > 1): ?>
+            <div class="log-viewer__pagination">
+                <?php if ($currentPage > 1): ?>
+                    <a href="?id=<?= $id ?>&limit=<?= $limit ?>&p=<?= $currentPage - 1 ?>&level=<?= $escaper->escapeHtmlAttr($level) ?>&q=<?= $escaper->escapeHtmlAttr($q) ?>"
+                       class="log-viewer__page-btn">&larr;</a>
+                <?php endif; ?>
+
+                <span class="log-viewer__page-info"><?= $escaper->escapeHtml(__('%1 / %2', $currentPage, $totalPages)) ?></span>
+
+                <?php if ($currentPage < $totalPages): ?>
+                    <a href="?id=<?= $id ?>&limit=<?= $limit ?>&p=<?= $currentPage + 1 ?>&level=<?= $escaper->escapeHtmlAttr($level) ?>&q=<?= $escaper->escapeHtmlAttr($q) ?>"
+                       class="log-viewer__page-btn">&rarr;</a>
+                <?php endif; ?>
+            </div>
+
+            <div class="log-viewer__toolbar-divider"></div>
+        <?php endif; ?>
+
+        <form class="log-viewer__limit-form" method="get">
+            <input type="hidden" name="id" value="<?= $id ?>"/>
+            <input type="hidden" name="p" value="1"/>
+            <input type="hidden" name="level" value="<?= $escaper->escapeHtmlAttr($level) ?>"/>
+            <input type="hidden" name="q" value="<?= $escaper->escapeHtmlAttr($q) ?>"/>
+
+            <label class="log-viewer__limit-label" for="log-limit"><?= $escaper->escapeHtml(__('Rows')) ?></label>
+
+            <select class="log-viewer__limit-select" id="log-limit" name="limit" onchange="this.form.submit()">
+                <?php foreach ($viewModel->getLimitOptions() as $option): ?>
+                    <option value="<?= (int) $option ?>" <?= $limit === (int) $option ? 'selected' : '' ?>><?= (int) $option ?></option>
                 <?php endforeach; ?>
             </select>
         </form>
+
     </div>
+
+    <div class="log-viewer__header">
+        <h2 class="log-viewer__title"><?= $escaper->escapeHtml($fileName) ?></h2>
+        <span class="log-viewer__count"><?= $escaper->escapeHtml(__('%1 entries — page %2 of %3', $viewModel->getTotalCount(), $currentPage, $totalPages)) ?></span>
+    </div>
+
     <?php if (empty($entries)): ?>
-        <p class="log-viewer__empty"><?= $block->escapeHtml(__('No log entries found.')) ?></p>
+        <p class="log-viewer__empty"><?= $escaper->escapeHtml(__('No log entries found.')) ?></p>
     <?php else: ?>
+
         <div class="log-viewer__table-wrapper">
             <table class="log-viewer__table">
                 <thead>
                 <tr>
                     <th class="log-viewer__th log-viewer__th--line">#</th>
-                    <th class="log-viewer__th log-viewer__th--entry">Log Entry</th>
+                    <th class="log-viewer__th">Log Entry</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($entries as $index => $line): ?>
-                    <?php
-                    $level = 'default';
-                    if (str_contains($line, '.ERROR') || str_contains($line, '.CRITICAL')) {
-                        $level = 'error';
-                    } elseif (str_contains($line, '.WARNING')) {
-                        $level = 'warning';
-                    } elseif (str_contains($line, '.INFO')) {
-                        $level = 'info';
-                    } elseif (str_contains($line, '.DEBUG')) {
-                        $level = 'debug';
-                    }
-                    ?>
-                    <tr class="log-viewer__tr log-viewer__tr--<?= $block->escapeHtmlAttr($level) ?>">
-                        <td class="log-viewer__td log-viewer__td--line"><?= (int)($index + 1) ?></td>
-                        <td class="log-viewer__td log-viewer__td--entry"><?= $block->escapeHtml($line) ?></td>
+                    <tr class="log-viewer__tr log-viewer__tr--<?= $escaper->escapeHtmlAttr($viewModel->getLevel($line)) ?>">
+                        <td class="log-viewer__td log-viewer__td--line"><?= (($currentPage - 1) * $limit) + $index + 1 ?></td>
+                        <td class="log-viewer__td log-viewer__td--entry"><?= /* @noEscape */ $viewModel->highlight($escaper->escapeHtml($line), $q) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
+
     <?php endif; ?>
+
 </div>
