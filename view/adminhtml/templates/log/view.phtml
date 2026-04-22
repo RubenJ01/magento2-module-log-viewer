@@ -10,28 +10,25 @@ use Magento\Backend\Block\Template;
 use RJDS\LogViewer\ViewModel\Log\View;
 use Magento\Framework\Escaper;
 
-$viewModel   = $block->getData('view_model');
-$entries     = $viewModel->getLogEntries();
-$fileName    = $viewModel->getFileName();
+$viewModel = $block->getData('view_model');
+$entries = $viewModel->getLogEntries();
+$fileName = $viewModel->getFileName();
 $currentPage = $viewModel->getPage();
-$totalPages  = $viewModel->getTotalPages();
-$limit       = $viewModel->getLimit();
-$id          = $viewModel->getId();
-$q           = $viewModel->getSearchQuery();
-$level       = $viewModel->getLevelFilter();
+$totalPages = $viewModel->getTotalPages();
+$limit = $viewModel->getLimit();
+$id = $viewModel->getId();
+$q = $viewModel->getSearchQuery();
+$level = $viewModel->getLevelFilter();
 ?>
 
 <div class="log-viewer">
-
     <div class="log-viewer__toolbar">
-
         <a href="<?= $escaper->escapeUrl($block->getUrl('logviewer/log_page/index')) ?>"
            class="log-viewer__back">
             &larr; <?= $escaper->escapeHtml(__('Back')) ?>
         </a>
 
         <div class="log-viewer__toolbar-divider"></div>
-
         <form class="log-viewer__filter-form" method="get">
             <input type="hidden" name="id" value="<?= $id ?>"/>
             <input type="hidden" name="limit" value="<?= $limit ?>"/>
