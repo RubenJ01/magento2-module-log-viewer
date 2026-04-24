@@ -1,6 +1,8 @@
 # Magento 2 Log Viewer
 
-Version Packagist Downloads License
+[![Version](https://img.shields.io/packagist/v/rjds/magento2-module-log-viewer.svg)](https://packagist.org/packages/rjds/magento2-module-log-viewer)
+[![Downloads](https://img.shields.io/packagist/dt/rjds/magento2-module-log-viewer.svg)](https://packagist.org/packages/rjds/magento2-module-log-viewer)
+[![License](https://img.shields.io/packagist/l/rjds/magento2-module-log-viewer.svg)](LICENSE)
 
 A Magento 2 module to view and manage log files directly from the admin panel.
 
@@ -40,13 +42,6 @@ Grant access to the Log Viewer in **System > Permissions > User Roles**.
 
 Make sure administrators who need this feature have the appropriate ACL resource enabled.
 
-### Typical workflow
-
-- Open `exception.log` after a reported checkout issue
-- Filter by timestamp and keyword (order increment, customer email, etc.)
-- Validate stack traces and correlate with deployment/release time
-- Clear or archive logs after issue resolution (according to your internal policy)
-
 ## Features
 
 - Admin-based log browsing
@@ -72,8 +67,7 @@ Run your project quality checks (PHPStan, PHPCS, PHPUnit, etc.) according to you
 
 ## Contributing
 
-Contributions are welcome.
-Please open an issue or pull request with a clear description, reproduction steps (if bug-related), and expected behavior.
+Contributions are welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution guidelines, commit conventions, and pull request workflow.
 
 ## Migrations
 
