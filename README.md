@@ -17,8 +17,6 @@ bin/magento setup:upgrade
 bin/magento cache:flush
 ```
 
-If you use a private Composer mirror, add your repository configuration first and then run the same require command.
-
 ## Overview
 
 View Magento logs from the backend without SSH or filesystem access.
