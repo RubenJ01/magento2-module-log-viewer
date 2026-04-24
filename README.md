@@ -30,7 +30,7 @@ The module provides an admin interface to:
 ## Quick Start
 
 1. Go to **Magento Admin**.
-2. Navigate to **System > Log Viewer**.
+2. Navigate to **Reports > Log Viewer > View Logs**.
 3. Select a log file (for example `system.log`, `exception.log`, or `debug.log`).
 4. Review entries and apply filters/search as needed.
 
