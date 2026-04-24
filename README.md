@@ -42,14 +42,6 @@ Grant access to the Log Viewer in **System > Permissions > User Roles**.
 
 Make sure administrators who need this feature have the appropriate ACL resource enabled.
 
-## Features
-
-- Admin-based log browsing
-- Supports common Magento log files
-- Search/filter support for faster troubleshooting
-- Role-based access control (ACL)
-- Magento-native module structure and integration
-
 ## Development
 
 ```bash
