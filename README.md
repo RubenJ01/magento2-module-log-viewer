@@ -34,6 +34,16 @@ The module provides an admin interface to:
 3. Select a log file (for example `system.log`, `exception.log`, or `debug.log`).
 4. Review entries and apply filters/search as needed.
 
+## Screenshots
+
+### View Logs
+
+![View Logs grid](docs/screenshots/view-logs-grid.png)
+
+### View Log
+
+![View Log detail](docs/screenshots/view-log-detail.png)
+
 ### Configure permissions
 
 Grant access to the Log Viewer in **System > Permissions > User Roles**.
