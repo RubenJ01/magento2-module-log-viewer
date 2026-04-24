@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="RJDS_LogViewer::css/log-viewer.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block
+                class="Magento\Backend\Block\Template"
+                name="logviewer.log.view"
+                template="RJDS_LogViewer::log/view.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">RJDS\LogViewer\ViewModel\Log\View</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
