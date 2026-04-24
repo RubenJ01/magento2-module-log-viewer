@@ -40,6 +40,17 @@
                     <url path="logviewer/log_massaction/download"/>
                 </settings>
             </action>
+            <action name="delete">
+                <settings>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                    <url path="logviewer/log_massaction/delete"/>
+                    <confirm>
+                        <title translate="true">Delete selected log files</title>
+                        <message translate="true">Are you sure you want to delete the selected log files?</message>
+                    </confirm>
+                </settings>
+            </action>
         </massaction>
         <bookmark name="bookmarks"/>
         <paging name="listing_paging"/>

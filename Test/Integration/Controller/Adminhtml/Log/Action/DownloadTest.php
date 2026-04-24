@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RJDS\LogViewer\Test\Integration\Controller\Adminhtml\Log;
+namespace RJDS\LogViewer\Test\Integration\Controller\Adminhtml\Log\Action;
 
 use Magento\TestFramework\TestCase\AbstractBackendController;
 
@@ -11,7 +11,7 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
  *
  * @magentoAppArea adminhtml
  */
-class LogFileDownloadTest extends AbstractBackendController
+class DownloadTest extends AbstractBackendController
 {
     protected $resource = 'RJDS_LogViewer::view_logs';
 
@@ -23,3 +23,4 @@ class LogFileDownloadTest extends AbstractBackendController
         $this->assertTrue($this->getResponse()->isRedirect());
     }
 }
+

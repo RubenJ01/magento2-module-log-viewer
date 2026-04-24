@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RJDS\LogViewer\Test\Integration\Controller\Adminhtml\Log;
+namespace RJDS\LogViewer\Test\Integration\Controller\Adminhtml\Log\Page;
 
 use Magento\TestFramework\TestCase\AbstractBackendController;
 
