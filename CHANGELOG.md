@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/RubenJ01/magento2-module-log-viewer/compare/v1.0.0...v1.0.1) (2026-04-29)
+
+
+### Bug Fixes
+
+* **registration:** include php-humanize in Magento DI compilation ([#18](https://github.com/RubenJ01/magento2-module-log-viewer/issues/18)) ([665dc89](https://github.com/RubenJ01/magento2-module-log-viewer/commit/665dc89ddb89bc01dbe277e6f455ea50d1a9398d))
+
 ## 1.0.0 (2026-04-24)
 
 
