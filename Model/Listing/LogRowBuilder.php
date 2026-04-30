@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace RJDS\LogViewer\Model\Listing;
 
 use DateTimeImmutable;
-use Magento\Framework\Phrase;
 use Rjds\PhpHumanize\HumanizerInterface;
 use SplFileInfo;
 
@@ -35,7 +34,6 @@ class LogRowBuilder
             'file_size_bytes' => $fileSizeBytes,
             'last_modified' => $this->humanizer->diffForHumans($lastModifiedDate),
             'last_modified_timestamp' => $lastModifiedTimestamp,
-            'actions' => $this->buildActions(),
         ];
     }
 
@@ -50,27 +48,6 @@ class LogRowBuilder
         $relativePath = ltrim(substr($normalizedAbsolutePath, strlen($normalizedLogDirectory)), '/');
 
         return self::LOG_PATH_PREFIX . $relativePath;
-    }
-
-    /**
-     * @return array<string, array{href:string,label:Phrase}>
-     */
-    private function buildActions(): array
-    {
-        return [
-            'view' => [
-                'href' => 'javascript:void(0)',
-                'label' => __('View'),
-            ],
-            'download' => [
-                'href' => 'javascript:void(0)',
-                'label' => __('Download'),
-            ],
-            'delete' => [
-                'href' => 'javascript:void(0)',
-                'label' => __('Delete'),
-            ],
-        ];
     }
 }
 

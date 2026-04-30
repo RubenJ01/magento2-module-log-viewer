@@ -28,7 +28,7 @@
     </dataSource>
 
     <listingToolbar name="listing_top">
-        <massaction name="listing_massaction">
+        <massaction name="listing_massaction" class="RJDS\LogViewer\Ui\Component\Listing\MassAction">
             <settings>
                 <indexField>id</indexField>
                 <selectProvider>logviewer_log_listing.logviewer_log_listing.logviewer_log_columns.ids</selectProvider>
