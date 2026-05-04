@@ -8,6 +8,7 @@ use Magento\Backend\App\Action;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Phrase;
+use RJDS\LogViewer\Model\Config\Config;
 use RJDS\LogViewer\Model\Listing\LogFileRowsLoader;
 use RJDS\LogViewer\Model\Path\LogFilePathResolver;
 
@@ -18,7 +19,8 @@ class Delete extends Action
     public function __construct(
         Action\Context $context,
         private LogFileRowsLoader $rowsLoader,
-        private LogFilePathResolver $filePathResolver
+        private LogFilePathResolver $filePathResolver,
+        private Config $config
     ) {
         parent::__construct($context);
     }
@@ -28,6 +30,10 @@ class Delete extends Action
      */
     public function execute(): Redirect
     {
+        if (!$this->config->isDeleteEnabled()) {
+            return $this->redirectWithError(__('Deleting log files is disabled.'));
+        }
+
         $id = (int) $this->getRequest()->getParam('id');
         if ($id <= 0) {
             return $this->redirectWithError(__('Invalid log file ID.'));

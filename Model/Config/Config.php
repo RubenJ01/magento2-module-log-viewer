@@ -10,6 +10,7 @@ use Magento\Store\Model\ScopeInterface;
 class Config
 {
     private const XML_PATH_ENABLED = 'rjds_logviewer/general/enabled';
+    private const XML_PATH_DELETE_ENABLED = 'rjds_logviewer/general/delete_enabled';
 
     public function __construct(
         private readonly ScopeConfigInterface $scopeConfig
@@ -25,6 +26,19 @@ class Config
     {
         return (bool) $this->scopeConfig->getValue(
             self::XML_PATH_ENABLED,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Whether deleting log files is allowed from the admin UI.
+     *
+     * Disabled by default; admins must explicitly opt in via store configuration.
+     */
+    public function isDeleteEnabled(): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_DELETE_ENABLED,
             ScopeInterface::SCOPE_STORE
         );
     }
