@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/RubenJ01/magento2-module-log-viewer/compare/v1.0.1...v1.1.0) (2026-05-04)
+
+
+### Features
+
+* added a setting to disable the deletion of log files ([#20](https://github.com/RubenJ01/magento2-module-log-viewer/issues/20)) ([b6a66d0](https://github.com/RubenJ01/magento2-module-log-viewer/commit/b6a66d02f6e1c261e22fb42b6f1e0f690c8a47bd))
+
 ## [1.0.1](https://github.com/RubenJ01/magento2-module-log-viewer/compare/v1.0.0...v1.0.1) (2026-04-29)
 
 
